@@ -19,8 +19,20 @@ class ProductTest < ActiveSupport::TestCase
                           description: "yyy",
                           price: 1,
                           image_url: "fred.gif")
-    asser product.invalid?
+    assert product.invalid?
     assert_equal [I18n.translate('errors.messages.taken')], 
-    produc.terrors[:title]
+    product.errors[:title]
   end
+
+  test "product title must be at least 10 character long" do
+    product = Product.new(title: "Some Title",
+                          description: "Some description",
+                          price: 1,
+                          image_url: "some.png")
+    assert product.valid?
+    product.title = "Any Title" 
+    assert product.invalid?
+    min_title_size = Product.validators_on(:title).select { |v| v.class == ActiveModel::Validations::LengthValidator}.first.options[:minimum]
+    assert_equal ["must have at least #{min_title_size} characters"], product.errors[:title]
+end
 end
