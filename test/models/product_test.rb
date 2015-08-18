@@ -24,15 +24,13 @@ class ProductTest < ActiveSupport::TestCase
     product.errors[:title]
   end
 
-  test "product title must be at least 10 character long" do
-    product = Product.new(title: "Some Title",
-                          description: "Some description",
-                          price: 1,
-                          image_url: "some.png")
-    assert product.valid?
-    product.title = "Any Title" 
-    assert product.invalid?
-    min_title_size = Product.validators_on(:title).select { |v| v.class == ActiveModel::Validations::LengthValidator}.first.options[:minimum]
-    assert_equal ["must have at least #{min_title_size} characters"], product.errors[:title]
+#
+
+test "product title must be at least ten characters long" do
+    product = products(:ruby)
+    assert product.valid?, "product title shouldn't be invalid" 
+
+    product.title = product.title.first(9)
+    assert product.invalid?, "product title shouldn't be valid" 
 end
 end
