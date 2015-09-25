@@ -16,12 +16,13 @@
 	  <%= 1.hour.since(Time.now) %>
 	  
 	  	<ul>
+	  	<%= pluralize session[:counter], 'time' %>
 	  		<li><a href="http://....">Home</a></li>
 	  		<li><a href="http://....">FAQ</a></li>
 	  		<li><a href="http://....">News</a></li>
 	  		<li><a href="http://....">Contact</a></li>
 	  	</ul>
-	  	<%= pluralize session[:counter], 'time' %>
+	  	
 	  </div>
 
 	  <div id="main">

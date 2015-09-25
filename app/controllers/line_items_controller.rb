@@ -1,5 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart
+  include CounterReset
   before_action :set_cart, only: [:create]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy]
 
@@ -28,14 +29,17 @@ class LineItemsController < ApplicationController
   def create
     #@line_item = LineItem.new(line_item_params)
     product = Product.find(params[:product_id])
-    @line_item = @cart.line_items.build(params[:product])
+    @line_item = @cart.add_product(product.id)
 
     respond_to do |format|
       if @line_item.save
-        format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
+      #  session[:counter] = nil
+      #  format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
+        @reset_session_counter
+        format.html { redirect_to(@line_item.cart, :notice => 'Line item was successfully created.')}
         format.json { render :show, status: :created, location: @line_item }
       else
-        format.html { render :new }
+        format.html { render action: 'new'}
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
       end
     end
@@ -73,6 +77,6 @@ class LineItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def line_item_params
-      params.require(:line_item).permit(:product_id, :cart_id)
+      params.require(:line_item).permit(:product_id)
     end
 end

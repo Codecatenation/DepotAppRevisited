@@ -50,8 +50,14 @@
 	padding: 1em 2em;
 	width: 13em;
 	background: #141;
+    
+ 
 
 	ul {
+	    p {
+	      color: #bfb;
+	      font-size: small;
+	    }
 		padding: 0;
 		li {
 			list-style: none;
@@ -61,6 +67,13 @@
 			}
 		}
 	}
+	p {
+       color: #bfb;
+       font-size: small;
+    }
+	
 }
+
+
 
 
